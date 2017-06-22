@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
+#yamite
+import parser
 
 #New chrome driver
 def init_driver():
@@ -27,20 +29,33 @@ def linked_in_login(driver):
         print 'No such element! '
         driver.quit()
 
-def execute_task(task_list, task, driver):
-    execute_operation_list(task_list[task])
+def execute_task_dict(task_dict, driver):
+    for task in task_dict:
+        execute_task(task_dict, task, driver)
+
+def execute_task(task_dict, task, driver):
+    operation_list = task_dict[task]
+    execute_operation_list(operation_list, driver)
 
 def execute_operation_list(operation_list, driver):
-    for operation_type, value in operation_list.iteritems():
+    for operation_type in operation_list:
         if operation_type == '$link':
             driver.get(value)
         elif operation_type == '$class':
             driver.find_element_by_class_name(value).click()
         elif operation_type == '$id':
             driver.find_element_by_id(value).click()
+        else:
+            print 'not built yet lmao'
 
 #main
 driver = init_driver()
+
+parsed_yaml = parser.open_yaml("test.yaml")
+task_dict = parser.create_task_dict(parsed_yaml)
+execute_task_dict(task_dict, driver)
+
+
 
 
 
