@@ -1,14 +1,21 @@
-login:
+login: #login is what we call a task
   - click element containing this text
   - class=click-this-class
   - id=click-some-id
   - $form:
     id=idname : evan.farrell@gmail.com
     class=classname : password_goes_here
-    submit : Log In #login can be replaced with id=x or class=y
-  - $done
+    submit : Log In #<Log In> can be replaced with id=x or class=y
 
-these-can-be-referred-to-as-a-var:
-  - $link: www.klipfolio.com
-  - $task: login
-  #continue with whatever else you need to do
+run a task inside this task (taskception): #this is another task
+  - $link: www.linkedin.com
+  - $task: login #task will now be run, be aware of what page it expects to be run on
+  - $loop: #this will run indefinitely
+    - class=recommended-friend-list
+    - id=first-friend-in-list
+    - Connect
+    - Send Message
+    - "Hey, please check out this cool site, klipfolio.com"
+
+start: #this task is effectively a main method
+  - run a task inside this task (taskception) # this will run the above task
