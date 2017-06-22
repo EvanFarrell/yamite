@@ -13,4 +13,3 @@ with open("test.yaml", 'r') as stream:
 
     except yaml.YAMLError as exc:
         print exc
-

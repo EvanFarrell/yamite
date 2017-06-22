@@ -1,7 +1,14 @@
-Evan:
-  - Very cool
-  - Fresh hair
+login:
+  - click element containing this text
+  - class=click-this-class
+  - id=click-some-id
+  - $form:
+    id=idname : evan.farrell@gmail.com
+    class=classname : password_goes_here
+    submit : Log In #login can be replaced with id=x or class=y
+  - $done
 
-Jacky:
-  - Likes Go
-  - Fresh hair too
+these-can-be-referred-to-as-a-var:
+  - $link: www.klipfolio.com
+  - $task: login
+  #continue with whatever else you need to do
