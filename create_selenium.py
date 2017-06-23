@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.webdriver.common.action_chains import ActionChains
 #yamite
 import parser
 
@@ -38,24 +39,43 @@ def execute_task(task_dict, task, driver):
     execute_operation_list(operation_list, driver)
 
 def execute_operation_list(operation_list, driver):
-    for operation_type in operation_list:
-        if operation_type == '$link':
-            driver.get(value)
-        elif operation_type == '$class':
-            driver.find_element_by_class_name(value).click()
-        elif operation_type == '$id':
-            driver.find_element_by_id(value).click()
-        else:
-            print 'not built yet lmao'
+    for operation_dict in operation_list:
+        for operation_type, value in operation_dict.iteritems():
+            element = run_operation_on_driver(operation_type, value, driver)
+        time.sleep(1)
 
-#main
+def run_operation_on_driver(operation_type, value, driver):
+    element = None
+    if operation_type == '$link':
+        driver.get(value)
+    elif operation_type == 'class':
+        element = driver.find_element_by_class_name(value).click()
+    elif operation_type == 'id':
+        element = driver.find_element_by_id(value).click()
+    elif operation_type == 'text_value':
+        element = driver.find_element_by_xpath("//*[contains(text(), '" + value + "')] | //*[@value='" + value + "']").click()
+        #driver.find_element_by_xpath("//*[contains(text(), 'Features')]").click()
+        #driver.find_element_by_xpath("//*[contains(text(), '"+value+"')]").click()
+    elif operation_type == '$type':
+        actions.send_keys(value)
+        actions.perform()
+
+    else:
+        print 'not built yet lmao'
+
+    return element
+
+
+#setup
 driver = init_driver()
+actions = ActionChains(driver)
 
 parsed_yaml = parser.open_yaml("test.yaml")
 task_dict = parser.create_task_dict(parsed_yaml)
 execute_task_dict(task_dict, driver)
 
-
+time.sleep(15)
+driver.quit()
 
 
 
